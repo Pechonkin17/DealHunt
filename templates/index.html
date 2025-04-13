@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    {% if not games %}
+        <h1>No games</h1>
+    {% endif %}
+    {% for game in games %}
+        <p>{{ game['title'] }}</p>
+        <p>{{ game['price'] }}</p>
+        <p>{{ game['discount'] }}</p>
+        <p>{{ game['link'] }}</p>
+    {% endfor %}
+
+</body>
+</html>
