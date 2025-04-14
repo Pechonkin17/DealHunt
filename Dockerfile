@@ -11,4 +11,4 @@ EXPOSE 4999
 CMD ["python", "app.py"]
 
 # docker build -t steam-deals-app .
- #docker run -p 4999:4999 steam-deals-app
+# docker run -p 4999:4999 steam-deals-app
