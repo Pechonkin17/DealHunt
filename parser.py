@@ -30,7 +30,6 @@ def parse_steam_discounts():
             'title': title,
             'link': link,
             'discount': discount,
-            'price': price
+            'price': float(price[:-2])
         })
-
     return games

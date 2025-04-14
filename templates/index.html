@@ -2,43 +2,23 @@
 <html lang="uk">
 <head>
     <meta charset="UTF-8">
-    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/style.css') }}">
 
     <title>DealHunt</title>
 </head>
 <body>
-
     <h1>Ігри</h1>
     <div class="game-container">
         {% for game in games %}
             <div class="game-card">
                 <h3>{{ game['title'] }}</h3>
-                <p><strong>Ціна:</strong> {{ game['price'] }}</p>
+                <p><strong>Ціна:</strong> {{ game['price']}}</p>
                 <p><strong>Знижка:</strong> {{ game['discount'] }}%</p>
                 <p><a href="{{ game['link'] }}" target="_blank">Перейти до гри</a></p>
             </div>
         {% endfor %}
     </div>
 
-    <script>
-        const centerY = window.innerHeight / 2;
-
-        function updateBlur() {
-            document.querySelectorAll('.game-card').forEach(card => {
-                const rect = card.getBoundingClientRect();
-                const cardY = rect.top + rect.height / 2;
-                const distance = Math.abs(centerY - cardY);
-
-                const maxDistance = window.innerHeight / 2;
-                const blurAmount = 12 - Math.min((distance / maxDistance) * 12, 12);
-
-                card.style.backdropFilter = `blur(${blurAmount}px)`;
-            });
-        }
-
-        window.addEventListener('scroll', updateBlur);
-        window.addEventListener('resize', updateBlur);
-        window.addEventListener('load', updateBlur);
-    </script>
+    <script src="../static/js/script.js"></script>
 </body>
 </html>

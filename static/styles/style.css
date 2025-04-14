@@ -1,6 +1,6 @@
 body {
     font-family: 'Segoe UI', sans-serif;
-    background-image: url("images/bg.webp");
+    background-image: url("../images/bg.webp");
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center;
@@ -25,7 +25,6 @@ body {
     padding: 1.5rem;
     width: 100%;
     max-width: 600px;
-    margin: 2rem auto;
     transition: transform 0.3s ease, border-color 0.3s ease, backdrop-filter 0.3s ease;
     border-radius: 12px;
 }

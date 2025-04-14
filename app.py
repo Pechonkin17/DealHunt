@@ -1,11 +1,15 @@
 from flask import Flask, render_template
 from parser import parse_steam_discounts
+
+
 app = Flask(__name__)
 
 
+games = parse_steam_discounts()
+
 @app.route('/', methods=['GET'])
 def index():
-    games = parse_steam_discounts()
+    global games
     return render_template('index.html', games=games)
 
 
