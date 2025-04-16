@@ -1,3 +1,4 @@
+import os
 import requests
 from bs4 import BeautifulSoup
 
@@ -9,7 +10,8 @@ def parse_steam_discounts():
     soup = BeautifulSoup(response.text, 'html.parser')
 
     games = []
-    for game in soup.select('.search_result_row'):
+    os.makedirs('./static/images/games', exist_ok=True)
+    for idx, game in enumerate(soup.select('.search_result_row')):
         title = game.select_one('.title').text
         link = game['href']
 
@@ -26,10 +28,24 @@ def parse_steam_discounts():
         except AttributeError:
             price = "Unknown"
 
+        try:
+            img_tag = game.select_one('img')
+            img_url = img_tag['src']
+            img_data = requests.get(img_url).content
+            img_filename = f'./static/images/games/game_{idx + 1}.jpg'
+
+            with open(img_filename, 'wb') as f:
+                f.write(img_data)
+        except Exception as e:
+            img_url = None
+            img_filename = None
+
         games.append({
             'title': title,
             'link': link,
             'discount': discount,
-            'price': float(price[:-2])
+            'price': float(price[:-2]),
+            'image_url': img_url,
+            'image_path': img_filename
         })
     return games
