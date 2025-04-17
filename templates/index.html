@@ -10,17 +10,21 @@
     <h1>Ігри</h1>
     <div class="game-container">
         {% for game in games %}
-            <div class="game-card">
-                <h3>
-                    <img src="{{ game.image_path }}" alt="{{ game.title }}">
-                    {{ game['title'] }}
-                </h3>
-                <p><strong>Ціна:</strong> {{ game['price']}}</p>
-                <p><strong>Знижка:</strong> {{ game['discount'] }}%</p>
-                <p><a href="{{ game['link'] }}" target="_blank">Перейти до гри</a></p>
+            <div class="game-info">
+                <div class="top-info">
+                    <img class="game-image" src="{{ game.image_path }}" alt="{{ game.title }}">
+                    <a class="game-title" href="{{ game.link }}" target="_blank">
+                        <h3>{{ game.title }}</h3>
+                    </a>
+                    <div class="price-info">
+                        <span class="discount">-{{ game.discount }}%</span>
+                        <span class="price">{{ game.price }}грн</span>
+                    </div>
+                </div>
             </div>
         {% endfor %}
     </div>
+
 
 {#    <script src="../static/js/script.js"></script>#}
 </body>

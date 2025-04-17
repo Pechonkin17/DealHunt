@@ -20,45 +20,73 @@ body {
     gap: 1.5rem;
     align-items: center;
     padding: 1rem;
-    border-radius: 12px;
 }
 
-.game-card {
-    background: rgba(0, 0, 0, 0.4);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    color: #ffffffcc;
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
-    padding: 1.5rem;
+.game-image {
+    width: 120px;
+    height: auto;
+    object-fit: cover;
+    flex-shrink: 0;
+}
+
+.game-info {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    flex-grow: 1;
     width: 100%;
-    max-width: 600px;
-    transition: transform 0.3s ease, border-color 0.3s ease, backdrop-filter 0.3s ease;
-    border-radius: 12px;
-    border-color: #eae9ec;
-    backdrop-filter: blur(10px);
 }
 
-.game-card:hover {
-    transform: translateY(-5px);
-    background: rgba(0, 0, 0, 0.6);
+.top-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
-.game-card h3 {
-    color: #ffffff;
-    margin-bottom: 0.7rem;
+.game-title {
+    font-size: 1.0rem;
+    color: #fff;
+    margin: 0;
     font-weight: 600;
 }
 
-.game-card p {
-    margin: 0.4rem 0;
-    font-size: 15px;
-    color: #cccccc;
+.price-info {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+    font-size: 1rem;
+    white-space: nowrap;
 }
 
-.game-card a {
+.discount {
+    color: #ef5350;
+    font-weight: bold;
+}
+
+.price {
+    color: #a5d6a7;
+    font-weight: bold;
+}
+
+.game-link {
+    margin-top: 0.7rem;
     color: #90a4ae;
     text-decoration: none;
+    font-size: 0.95rem;
 }
 
-.game-card a:hover {
+.game-link:hover {
     color: #b0bec5;
+}
+.game-title {
+    color: #ffffff;
+    font-size: 1.2rem;
+    font-weight: 600;
+    text-decoration: none;
+    margin: 0;
+}
+
+.game-title:hover {
+    color: #90caf9;
+    text-decoration: underline;
 }
