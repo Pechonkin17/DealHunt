@@ -7,6 +7,15 @@ app = Flask(__name__)
 
 games = parse_steam_discounts()
 
+
+@app.route('/by_price')
+def sorted_games_by_price():
+    global games
+    sorted_games = sorted(games, key=lambda game: game['price'])
+    print(sorted_games)
+    return render_template('index.html', games=sorted_games)
+
+
 @app.route('/', methods=['GET'])
 def index():
     global games
