@@ -218,12 +218,6 @@ input[type="range"]::-moz-range-thumb {
     justify-content: space-between;
 }
 
-.price-inputs {
-    display: flex;
-    gap: 0.5rem;
-    flex-direction: column;
-}
-
 .falling-text {
     display: flex;
     justify-content: center;
