@@ -7,8 +7,6 @@
     <title>DealHunt</title>
 </head>
 <body>
-<h1>Ігри</h1>
-
 <div class="main-wrapper">
     <!-- Фільтри -->
     <div class="filter-sidebar">
@@ -17,11 +15,11 @@
         <form method="get" action="{{ url_for('filtered_games') }}">
         <!-- Пошук -->
         <label for="searchTitle">Назва гри:</label>
-        <input type="text" id="searchTitle" name="searchTitle" value="{{ request.args.get('searchTitle', '') }}">
+        <input type="text" id="searchTitle" name="searchTitle" placeholder="ABCDE" value="{{ request.args.get('searchTitle', '') }}">
 
         <!-- Ціна -->
-        <label>Від: <input type="number" name="minPrice" value="{{ request.args.get('minPrice', '') }}"></label>
-        <label>До: <input type="number" name="maxPrice" value="{{ request.args.get('maxPrice', '') }}"></label>
+        <label>Від: <input type="number" name="minPrice" placeholder="0" value="{{ request.args.get('minPrice', '') }}"></label>
+        <label>До: <input type="number" name="maxPrice" placeholder="4000" value="{{ request.args.get('maxPrice', '') }}"></label>
 
         <!-- Сортування -->
         <input type="hidden" name="sort" value="{{ request.args.get('sort', 'up') }}">
@@ -47,22 +45,30 @@
     </div>
 
     <!-- Контент -->
-    <div class="game-container">
-        {% for game in games %}
-            <div class="game-info">
-                <div class="top-info">
-                    <img class="game-image" src="{{ game.image_path }}" alt="{{ game.title }}">
-                    <a class="game-title" href="{{ game.link }}" target="_blank">
-                        <h3>{{ game.title }}</h3>
-                    </a>
-                    <div class="price-info">
-                        <span class="discount">-{{ game.discount }}%</span>
-                        <span class="price">{{ game.price }}грн</span>
+    {% if games %}
+        <div class="game-container">
+            {% for game in games %}
+                <div class="game-info">
+                    <div class="top-info">
+                        <img class="game-image" src="{{ game.image_path }}" alt="{{ game.title }}">
+                        <a class="game-title" href="{{ game.link }}" target="_blank">
+                            <h3>{{ game.title }}</h3>
+                        </a>
+                        <div class="price-info">
+                            <span class="discount">-{{ game.discount }}%</span>
+                            <span class="price">{{ game.price }}грн</span>
+                        </div>
                     </div>
                 </div>
-            </div>
-        {% endfor %}
-    </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <h1 class="falling-text">
+            {% for letter in 'No games' %}
+                <span class="letter" style="--i: {{ loop.index0 }}">{{ letter }}</span>
+            {% endfor %}
+        </h1>
+    {% endif %}
 </div>
 
 <script src="{{ url_for('static', filename='js/script.js') }}"></script>

@@ -7,4 +7,3 @@ slider.addEventListener("input", function () {
 
 // Ініціалізуємо при завантаженні
 slider.dispatchEvent(new Event("input"));
-

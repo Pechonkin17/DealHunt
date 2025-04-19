@@ -20,13 +20,19 @@ def filtered_games():
     # Фільтрація
     filtered = games
 
-    if min_price is not None:
+    if min_price is not None and max_price is not None:
         filtered = [g for g in filtered if g['price'] >= min_price]
-
-    if max_price is not None and max_price > min_price:
+        if max_price > min_price:
+            filtered = [g for g in filtered if g['price'] <= max_price]
+        elif max_price <= min_price:
+            filtered = [g for g in filtered if g['price'] == min_price]
+        elif max_price >= 4000:
+            filtered = [g for g in filtered if g['price'] <= 4000]
+    elif min_price is not None and max_price is None:
+        filtered = [g for g in filtered if g['price'] >= min_price]
+    elif max_price is not None and min_price is None:
         filtered = [g for g in filtered if g['price'] <= max_price]
-    elif max_price is not None and max_price <= min_price:
-        filtered = [g for g in filtered if g['price'] == max_price]
+
 
     if search_title:
         filtered = [g for g in filtered if search_title in g['title'].lower()]

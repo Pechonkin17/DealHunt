@@ -135,7 +135,7 @@ body {
 
 input[type="number"]::-webkit-inner-spin-button,
 input[type="number"]::-webkit-outer-spin-button {
-    filter: invert(3%) sepia(100%) saturate(500%) hue-rotate(240deg);
+    filter: sepia(100%);
 }
 
 /* Загальний стиль */
@@ -222,4 +222,33 @@ input[type="range"]::-moz-range-thumb {
     display: flex;
     gap: 0.5rem;
     flex-direction: column;
+}
+
+.falling-text {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-top: 100px;
+}
+
+.letter {
+    font-size: 10rem;
+    color: #6e1632;
+    display: inline-block;
+    opacity: 0;
+    transform: translateY(-300px) rotate(0deg);
+    animation: fall-letter 2s ease-out forwards;
+    animation-delay: calc(var(--i) * 0.1s);
+}
+
+/* Анімація для кожної літери */
+@keyframes fall-letter {
+    0% {
+        opacity: 0;
+        transform: translateY(-100px) rotate(0deg);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(200px);
+    }
 }
