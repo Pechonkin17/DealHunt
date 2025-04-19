@@ -1,4 +1,4 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request
 from parser import parse_steam_discounts
 
 
@@ -8,12 +8,34 @@ app = Flask(__name__)
 games = parse_steam_discounts()
 
 
-@app.route('/by_price')
-def sorted_games_by_price():
+@app.route('/filtered')
+def filtered_games():
     global games
-    sorted_games = sorted(games, key=lambda game: game['price'])
-    print(sorted_games)
-    return render_template('index.html', games=sorted_games)
+    # Параметри з запиту
+    sort_order = request.args.get('sort', 'up')
+    min_price = request.args.get('minPrice', type=float)
+    max_price = request.args.get('maxPrice', type=float)
+    search_title = request.args.get('searchTitle', '').lower()
+
+    # Фільтрація
+    filtered = games
+
+    if min_price is not None:
+        filtered = [g for g in filtered if g['price'] >= min_price]
+
+    if max_price is not None and max_price > min_price:
+        filtered = [g for g in filtered if g['price'] <= max_price]
+    elif max_price is not None and max_price <= min_price:
+        filtered = [g for g in filtered if g['price'] == max_price]
+
+    if search_title:
+        filtered = [g for g in filtered if search_title in g['title'].lower()]
+
+    # Сортування
+    reverse = sort_order == 'down'
+    filtered = sorted(filtered, key=lambda g: g['price'], reverse=reverse)
+
+    return render_template('index.html', games=filtered)
 
 
 @app.route('/', methods=['GET'])
