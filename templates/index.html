@@ -7,28 +7,70 @@
     <title>DealHunt</title>
 </head>
 <body>
-    <h1>Ігри</h1>
-    <a href="{{ url_for('sorted_games_by_price') }}">
-        <button type="button">Сортувати за ціною</button>
-    </a>
-    <div class="game-container">
-        {% for game in games %}
-            <div class="game-info">
-                <div class="top-info">
-                    <img class="game-image" src="{{ game.image_path }}" alt="{{ game.title }}">
-                    <a class="game-title" href="{{ game.link }}" target="_blank">
-                        <h3>{{ game.title }}</h3>
-                    </a>
-                    <div class="price-info">
-                        <span class="discount">-{{ game.discount }}%</span>
-                        <span class="price">{{ game.price }}грн</span>
-                    </div>
-                </div>
+<div class="main-wrapper">
+    <!-- Фільтри -->
+    <div class="filter-sidebar">
+        <h2>Фільтри</h2>
+
+        <form method="get" action="{{ url_for('filtered_games') }}">
+        <!-- Пошук -->
+        <label for="searchTitle">Назва гри:</label>
+        <input type="text" id="searchTitle" name="searchTitle" placeholder="ABCDE" value="{{ request.args.get('searchTitle', '') }}">
+
+        <!-- Ціна -->
+        <label>Від: <input type="number" name="minPrice" placeholder="0" value="{{ request.args.get('minPrice', '') }}"></label>
+        <label>До: <input type="number" name="maxPrice" placeholder="4000" value="{{ request.args.get('maxPrice', '') }}"></label>
+
+        <!-- Сортування -->
+        <input type="hidden" name="sort" value="{{ request.args.get('sort', 'up') }}">
+
+            <!-- Кнопки -->
+            <div class="filter-buttons">
+                <button type="submit">Пошук</button>
+                <a href="{{ url_for('filtered_games') }}"><button type="button">Скинути</button></a>
             </div>
-        {% endfor %}
+        </form>
+
+        <!-- Кнопка сортування окремо -->
+        <a href="{{ url_for('filtered_games',
+                    sort=('down' if request.args.get('sort') == 'up' else 'up'),
+                    minPrice=request.args.get('minPrice'),
+                    maxPrice=request.args.get('maxPrice'),
+                    searchTitle=request.args.get('searchTitle')) }}">
+            <button type="button">
+                Сортувати за ціною: {% if request.args.get('sort') == 'down' %}↓{% else %}↑{% endif %}
+            </button>
+        </a>
+
     </div>
 
+    <!-- Контент -->
+    {% if games %}
+        <div class="game-container">
+            {% for game in games %}
+                <div class="game-info">
+                    <div class="top-info">
+                        <img class="game-image" src="{{ game.image_path }}" alt="{{ game.title }}">
+                        <a class="game-title" href="{{ game.link }}" target="_blank">
+                            <h3>{{ game.title }}</h3>
+                        </a>
+                        <div class="price-info">
+                            <span class="discount">-{{ game.discount }}%</span>
+                            <span class="price">{{ game.price }}грн</span>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <h1 class="falling-text">
+            {% for letter in 'No games' %}
+                <span class="letter" style="--i: {{ loop.index0 }}">{{ letter }}</span>
+            {% endfor %}
+        </h1>
+    {% endif %}
+</div>
 
-{#    <script src="../static/js/script.js"></script>#}
+<script src="{{ url_for('static', filename='js/script.js') }}"></script>
 </body>
 </html>
