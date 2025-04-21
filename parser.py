@@ -1,9 +1,19 @@
 import os
 import requests
 from bs4 import BeautifulSoup
+from typing import List, TypedDict
 
 
-def parse_steam_discounts():
+class GameInfo(TypedDict):
+    title: str
+    link: str
+    discount: str
+    price: float
+    image_url: str
+    image_path: str
+
+
+def parse_steam_discounts() -> List[GameInfo]:
     url = 'https://store.steampowered.com/search/?specials=1'
     response = requests.get(url)
 
