@@ -246,3 +246,19 @@ input[type="range"]::-moz-range-thumb {
         transform: translateY(200px);
     }
 }
+
+@media (max-width: 768px) {
+    .main-wrapper {
+        flex-direction: column;
+        padding: 0 1rem;
+    }
+
+    .filter-sidebar {
+        width: 100%;
+        order: -1;
+    }
+
+    .game-container {
+        width: 100%;
+    }
+}
