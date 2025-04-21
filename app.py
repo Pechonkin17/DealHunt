@@ -1,52 +1,40 @@
 from flask import Flask, render_template, request
-from parser import parse_steam_discounts
-
+from db.mongo_client import get_games_collection
 
 app = Flask(__name__)
+collection = get_games_collection()
 
 
-games = parse_steam_discounts()
+@app.route('/')
+def index():
+    games = list(collection.find())
+    return render_template('index.html', games=games)
 
 
 @app.route('/filtered')
 def filtered_games():
-    global games
-    # Параметри з запиту
     sort_order = request.args.get('sort', 'up')
     min_price = request.args.get('minPrice', type=float)
     max_price = request.args.get('maxPrice', type=float)
     search_title = request.args.get('searchTitle', '').lower()
 
-    # Фільтрація
-    filtered = games
+    query = {}
 
-    if min_price is not None and max_price is not None:
-        filtered = [g for g in filtered if g['price'] >= min_price]
-        if max_price > min_price:
-            filtered = [g for g in filtered if g['price'] <= max_price]
-        elif max_price <= min_price:
-            filtered = [g for g in filtered if g['price'] == min_price]
-        elif max_price >= 4000:
-            filtered = [g for g in filtered if g['price'] <= 4000]
-    elif min_price is not None and max_price is None:
-        filtered = [g for g in filtered if g['price'] >= min_price]
-    elif max_price is not None and min_price is None:
-        filtered = [g for g in filtered if g['price'] <= max_price]
+    if min_price is not None:
+        query['price'] = {'$gte': min_price}
 
+    if max_price is not None:
+        if 'price' in query:
+            query['price']['$lte'] = max_price
+        else:
+            query['price'] = {'$lte': max_price}
 
     if search_title:
-        filtered = [g for g in filtered if search_title in g['title'].lower()]
+        query['title'] = {'$regex': search_title, '$options': 'i'}
 
-    # Сортування
-    reverse = sort_order == 'down'
-    filtered = sorted(filtered, key=lambda g: g['price'], reverse=reverse)
+    sort_dir = 1 if sort_order == 'up' else -1
+    games = list(collection.find(query).sort('price', sort_dir))
 
-    return render_template('index.html', games=filtered)
-
-
-@app.route('/', methods=['GET'])
-def index():
-    global games
     return render_template('index.html', games=games)
 
 
