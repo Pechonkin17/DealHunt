@@ -1,5 +1,8 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, make_response, redirect, url_for
 from db.mongo_client import get_games_collection
+import json
+from bson import ObjectId
+
 
 app = Flask(__name__)
 collection = get_games_collection()
@@ -36,6 +39,36 @@ def filtered_games():
     games = list(collection.find(query).sort('price', sort_dir))
 
     return render_template('index.html', games=games)
+
+
+@app.route('/save_game/<game_id>')
+def save_game(game_id):
+    resp = make_response(redirect(url_for('index')))
+    saved_games = request.cookies.get('saved_games')
+
+    if saved_games:
+        saved_games = json.loads(saved_games)
+    else:
+        saved_games = []
+
+    if game_id not in saved_games:
+        saved_games.append(game_id)
+
+    resp.set_cookie('saved_games', json.dumps(saved_games))
+    return resp
+
+
+@app.route('/saved')
+def saved():
+    saved_games = request.cookies.get('saved_games')
+
+    if saved_games:
+        saved_game_ids = json.loads(saved_games)
+        games = list(collection.find({'_id': {'$in': [ObjectId(id_) for id_ in saved_game_ids]}}))
+    else:
+        games = []
+
+    return render_template('saved.html', games=games)
 
 
 if __name__ == '__main__':

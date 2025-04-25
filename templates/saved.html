@@ -1,0 +1,14 @@
+
+<h1>Збережені ігри</h1>
+
+{% if games %}
+    {% for game in games %}
+        <div class="game">
+            <h2>{{ game.title }}</h2>
+            <p>Ціна: {{ game.price }} грн</p>
+            <a href="{{ game.link }}" target="_blank">Перейти до гри</a>
+        </div>
+    {% endfor %}
+{% else %}
+    <p>Немає збережених ігор</p>
+{% endif %}

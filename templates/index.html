@@ -57,6 +57,9 @@
                         <div class="price-info">
                             <span class="discount">-{{ game.discount }}%</span>
                             <span class="price">{{ game.price }}грн</span>
+                            <a href="{{ url_for('save_game', game_id=game._id) }}">
+                              <button>Зберегти</button>
+                            </a>
                         </div>
                     </div>
                 </div>
